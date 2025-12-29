@@ -2,25 +2,378 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>我的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mcaqsunqi - 个人主页</title>
     <style>
-        .project { margin: 20px 0; padding: 15px; border: 1px solid #eee; }
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航栏 */
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar h2 {
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* 容器布局 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 5%;
+        }
+
+        /* 个人介绍模块 */
+        .profile {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .profile img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 5px solid #3498db;
+        }
+
+        .profile h1 {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 0.8rem;
+        }
+
+        .profile p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 技术栈模块 */
+        .skills {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .skills h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .skills h2::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #3498db;
+            margin: 0.8rem auto 0;
+            border-radius: 2px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .skill-item {
+            background-color: #e8f4fd;
+            color: #2980b9;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background-color: #3498db;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* 项目展示模块（核心：展示你的Gitee项目） */
+        .projects {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .projects h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .projects h2::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #3498db;
+            margin: 0.8rem auto 0;
+            border-radius: 2px;
+        }
+
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background-color: #f9fbff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #eef4fa;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border-color: #3498db;
+        }
+
+        .project-card h3 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-card h3 i {
+            color: #3498db;
+        }
+
+        .project-card p {
+            color: #666;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .project-card a {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card a:hover {
+            background-color: #2980b9;
+            transform: translateX(3px);
+        }
+
+        /* 联系方式模块 */
+        .contact {
+            padding: 2rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .contact h2::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #3498db;
+            margin: 0.8rem auto 0;
+            border-radius: 2px;
+        }
+
+        .contact-list {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            color: #666;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: #3498db;
+            transform: translateY(-3px);
+        }
+
+        /* 底部版权 */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #888;
+            font-size: 0.9rem;
+            background-color: #2c3e50;
+            color: rgba(255,255,255,0.7);
+            margin-top: 3rem;
+        }
+
+        /* 响应式适配（手机端） */
+        @media (max-width: 768px) {
+            .profile h1 {
+                font-size: 1.8rem;
+            }
+
+            .skills h2, .projects h2, .contact h2 {
+                font-size: 1.5rem;
+            }
+
+            .project-list {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-item {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
     </style>
+    <!-- 引入图标库（美化页面，无需额外下载） -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1>你好尽1111111111力了</h1>
-    <h2>我的Gitee项目合集</h2>
-    <!-- 展示你的电商项目 -->
-    <div class="project">
-        <h3>电商系统（month1-6）</h3>
-        <p>技术栈：Java + Spring Boot + Vue | 包含商品/订单/支付功能</p>
-        <a href="https://gitee.com/mcaqmcaq/month1-6" target="_blank">点击访问Gitee项目</a>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <h2><i class="fas fa-code"></i> 我的个人技术主页</h2>
+    </nav>
+
+    <div class="container">
+        <!-- 个人介绍模块 -->
+        <section class="profile">
+            <!-- 替换为你的头像（可使用网络图片或Gitee仓库图片地址） -->
+            <img src="https://picsum.photos/id/1005/150/150" alt="个人头像">
+            <h1>mcaqsunqi</h1>
+            <p>专注Java后端开发 | 擅长电商系统/成本管理系统搭建 | 持续学习，不断沉淀技术能力</p>
+        </section>
+
+        <!-- 技术栈模块（可根据你的技术栈修改） -->
+        <section class="skills">
+            <h2>我的技术栈</h2>
+            <div class="skill-list">
+                <div class="skill-item">Java</div>
+                <div class="skill-item">Spring Boot</div>
+                <div class="skill-item">MySQL</div>
+                <div class="skill-item">Vue</div>
+                <div class="skill-item">MyBatis</div>
+                <div class="skill-item">Redis</div>
+                <div class="skill-item">Maven</div>
+                <div class="skill-item">Git</div>
+            </div>
+        </section>
+
+        <!-- 项目展示模块（替换为你的Gitee项目信息） -->
+        <section class="projects">
+            <h2>我的核心项目</h2>
+            <div class="project-list">
+                <!-- 项目1：电商系统 -->
+                <div class="project-card">
+                    <h3><i class="fas fa-shopping-cart"></i> 电商系统（month1-6）</h3>
+                    <p>技术栈：Java + Spring Boot + Vue + MySQL<br>
+                    核心功能：商品管理、订单结算、购物车、第三方登录、支付对接</p>
+                    <!-- 替换为你的Gitee项目链接 -->
+                    <a href="https://gitee.com/mcaqmcaq/month1-6" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> 访问Gitee仓库
+                    </a>
+                </div>
+
+                <!-- 项目2：成本管理系统 -->
+                <div class="project-card">
+                    <h3><i class="fas fa-calculator"></i> 成本管理系统</h3>
+                    <p>技术栈：Java + Spring Boot + MyBatis + MySQL<br>
+                    核心功能：成本统计、费用汇总、数据导出、报表生成与展示</p>
+                    <!-- 替换为你的Gitee项目链接 -->
+                    <a href="https://gitee.com/mcaqmcaq/成本管理系统" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> 访问Gitee仓库
+                    </a>
+                </div>
+
+                <!-- 项目3：JAVA在线学习系统 -->
+                <div class="project-card">
+                    <h3><i class="fas fa-book-open"></i> JAVA在线学习系统</h3>
+                    <p>技术栈：Java + Spring Boot + Thymeleaf + MySQL<br>
+                    核心功能：课程展示、在线学习、作业提交、学习进度统计</p>
+                    <!-- 替换为你的Gitee项目链接 -->
+                    <a href="https://gitee.com/mcaqmcaq/JAVA在线学习系统" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> 访问Gitee仓库
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系方式模块（可修改为你的联系方式） -->
+        <section class="contact">
+            <h2>联系我</h2>
+            <div class="contact-list">
+                <a href="https://gitee.com/mcaqmcaq" target="_blank" class="contact-item">
+                    <i class="fab fa-git"></i> Gitee
+                </a>
+                <a href="mailto:your-email@xxx.com" class="contact-item">
+                    <i class="fas fa-envelope"></i> 邮箱
+                </a>
+                <a href="#" class="contact-item">
+                    <i class="fas fa-phone"></i> 电话
+                </a>
+            </div>
+        </section>
     </div>
-    <!-- 展示成本管理系统 -->
-    <div class="project">
-        <h3>成本管理系统</h3>
-        <p>企业成本统计与分析工具，支持数据导出</p>
-        <a href="https://gitee.com/mcaqmcaq/成本管理系统" target="_blank">点击访问Gitee项目</a>
-    </div>
+
+    <!-- 底部版权 -->
+    <footer class="footer">
+        <p>© 2025 mcaqsunqi 个人技术主页 | 基于 GitHub Pages 部署</p>
+    </footer>
 </body>
 </html>
